@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecurePass Manager</title>
+    <style>
+        :root {
+            --primary-bg: #121212;
+            --secondary-bg: #1e1e1e;
+            --accent-color: #00aa55;
+            --text-color: #e0e0e0;
+            --error-color: #ff5555;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            background-color: var(--secondary-bg);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 170, 85, 0.2);
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            transition: all 0.3s ease;
+        }
+        
+        h1 {
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #252525;
+            color: var(--text-color);
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+        
+        button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #008844;
+        }
+        
+        .error {
+            color: var(--error-color);
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        .password-manager {
+            display: none;
+        }
+        
+        .account-list {
+            margin-top: 20px;
+        }
+        
+        .account-category {
+            margin-bottom: 30px;
+        }
+        
+        .category-title {
+            color: var(--accent-color);
+            border-bottom: 1px solid #333;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .account-item {
+            background-color: #252525;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .account-info {
+            margin-bottom: 10px;
+        }
+        
+        .copy-btn {
+            background-color: #333;
+            color: var(--text-color);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        
+        .copy-btn:hover {
+            background-color: #444;
+        }
+        
+        .add-account-form {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+        
+        .logout-btn {
+            background-color: #333;
+            margin-top: 20px;
+        }
+        
+        .logout-btn:hover {
+            background-color: #444;
+        }
+        
+        .attempts-left {
+            text-align: center;
+            font-size: 14px;
+            color: #aaa;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="login-container">
+        <h1>SecurePass Manager</h1>
+        <div class="login-form">
+            <div class="form-group">
+                <label for="pin">Enter PIN</label>
+                <input type="password" id="pin" placeholder="Enter your 6-digit PIN">
+            </div>
+            <button id="login-btn">Access Passwords</button>
+            <div class="error" id="error-message"></div>
+            <div class="attempts-left" id="attempts-left"></div>
+        </div>
+    </div>
+    
+    <div class="container password-manager" id="password-manager">
+        <h1>Your Passwords</h1>
+        
+        <div class="account-list">
+            <div class="account-category">
+                <h3 class="category-title">Instagram Accounts</h3>
+                <div class="account-item">
+                    <div class="account-info">
+                        <strong>Username:</strong> pawan.73719
+                        <button class="copy-btn" onclick="copyToClipboard('pawan.73719')">Copy</button>
+                    </div>
+                    <div class="account-info">
+                        <strong>Password:</strong> <span class="password">#swetachoudhary</span>
+                        <button class="copy-btn" onclick="copyToClipboard('#swetachoudhary')">Copy</button>
+                    </div>
+                </div>
+                <div class="account-item">
+                    <div class="account-info">
+                        <strong>Username:</strong> pawan.79031
+                        <button class="copy-btn" onclick="copyToClipboard('pawan.79031')">Copy</button>
+                    </div>
+                    <div class="account-info">
+                        <strong>Password:</strong> <span class="password">#swetachoudhary</span>
+                        <button class="copy-btn" onclick="copyToClipboard('#swetachoudhary')">Copy</button>
+                    </div>
+                </div>
+                <div class="account-item">
+                    <div class="account-info">
+                        <strong>Username:</strong> pawan.88779
+                        <button class="copy-btn" onclick="copyToClipboard('pawan.88779')">Copy</button>
+                    </div>
+                    <div class="account-info">
+                        <strong>Password:</strong> <span class="password">#swetachoudhary</span>
+                        <button class="copy-btn" onclick="copyToClipboard('#swetachoudhary')">Copy</button>
+                    </div>
+                </div>
+                <div class="account-item">
+                    <div class="account-info">
+                        <strong>Username:</strong> unknown.180211
+                        <button class="copy-btn" onclick="copyToClipboard('unknown.180211')">Copy</button>
+                    </div>
+                    <div class="account-info">
+                        <strong>Password:</strong> <span class="password">#swetachoudhary</span>
+                        <button class="copy-btn" onclick="copyToClipboard('#swetachoudhary')">Copy</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="account-category">
+                <h3 class="category-title">Gmail Accounts</h3>
+                <div class="account-item">
+                    <div class="account-info">
+                        <strong>Email:</strong> pawan.73719@gmail.com
+                        <button class="copy-btn" onclick="copyToClipboard('pawan.73719@gmail.com')">Copy</button>
+                    </div>
+                    <div class="account-info">
+                        <strong>Password:</strong> <span class="password">sweta choudhary</span>
+                        <button class="copy-btn" onclick="copyToClipboard('sweta choudhary')">Copy</button>
+                    </div>
+                </div>
+                <div class="account-item">
+                    <div class="account-info">
+                        <strong>Email:</strong> sweta.73719@gmail.com
+                        <button class="copy-btn" onclick="copyToClipboard('sweta.73719@gmail.com')">Copy</button>
+                    </div>
+                    <div class="account-info">
+                        <strong>Password:</strong> <span class="password">#swetachoudhary</span>
+                        <button class="copy-btn" onclick="copyToClipboard('#swetachoudhary')">Copy</button>
+                    </div>
+                </div>
+                <div class="account-item">
+                    <div class="account-info">
+                        <strong>Email:</strong> anil.kr96317@gmail.com
+                        <button class="copy-btn" onclick="copyToClipboard('anil.kr96317@gmail.com')">Copy</button>
+                    </div>
+                    <div class="account-info">
+                        <strong>Password:</strong> <span class="password">73719292am</span>
+                        <button class="copy-btn" onclick="copyToClipboard('73719292am')">Copy</button>
+                    </div>
+                </div>
+                <div class="account-item">
+                    <div class="account-info">
+                        <strong>Email:</strong> faiz.285469@gmail.com
+                        <button class="copy-btn" onclick="copyToClipboard('faiz.285469@gmail.com')">Copy</button>
+                    </div>
+                    <div class="account-info">
+                        <strong>Password:</strong> <span class="password">#FaizNajish</span>
+                        <button class="copy-btn" onclick="copyToClipboard('#FaizNajish')">Copy</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="account-category">
+                <h3 class="category-title">GitHub Account</h3>
+                <div class="account-item">
+                    <div class="account-info">
+                        <strong>Username:</strong> pawan9460r
+                        <button class="copy-btn" onclick="copyToClipboard('pawan9460r')">Copy</button>
+                    </div>
+                    <div class="account-info">
+                        <strong>Password:</strong> <span class="password">#swetachoudhary</span>
+                        <button class="copy-btn" onclick="copyToClipboard('#swetachoudhary')">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="add-account-form">
+            <h3>Add New Account</h3>
+            <div class="form-group">
+                <label for="account-type">Account Type</label>
+                <select id="account-type" class="form-control">
+                    <option value="instagram">Instagram</option>
+                    <option value="gmail">Gmail</option>
+                    <option value="github">GitHub</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="username">Username/Email</label>
+                <input type="text" id="username" placeholder="Enter username or email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="text" id="password" placeholder="Enter password">
+            </div>
+            <button id="add-account-btn">Add Account</button>
+        </div>
+        
+        <button class="logout-btn" id="logout-btn">Lock Manager</button>
+    </div>
+
+    <script>
+        // Login functionality
+        const correctPin = "180211";
+        let attempts = 3;
+        
+        document.getElementById('attempts-left').textContent = `Attempts left: ${attempts}`;
+        
+        document.getElementById('login-btn').addEventListener('click', function() {
+            const enteredPin = document.getElementById('pin').value;
+            const errorMessage = document.getElementById('error-message');
+            
+            if (enteredPin === correctPin) {
+                // Successful login
+                document.getElementById('login-container').style.display = 'none';
+                document.getElementById('password-manager').style.display = 'block';
+            } else {
+                // Failed login
+                attempts--;
+                document.getElementById('attempts-left').textContent = `Attempts left: ${attempts}`;
+                
+                if (attempts <= 0) {
+                    errorMessage.textContent = "No attempts left. Please try again later.";
+                    document.getElementById('login-btn').disabled = true;
+                } else {
+                    errorMessage.textContent = "Incorrect PIN. Please try again.";
+                }
+                
+                // Clear the input field
+                document.getElementById('pin').value = '';
+            }
+        });
+        
+        // Allow pressing Enter to submit the PIN
+        document.getElementById('pin').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                document.getElementById('login-btn').click();
+            }
+        });
+        
+        // Logout functionality
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            document.getElementById('password-manager').style.display = 'none';
+            document.getElementById('login-container').style.display = 'block';
+            document.getElementById('pin').value = '';
+        });
+        
+        // Add new account functionality
+        document.getElementById('add-account-btn').addEventListener('click', function() {
+            const accountType = document.getElementById('account-type').value;
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            if (!username || !password) {
+                alert('Please enter both username and password');
+                return;
+            }
+            
+            const accountList = document.querySelector('.account-list');
+            let categoryElement = null;
+            
+            // Find or create the category element
+            switch(accountType) {
+                case 'instagram':
+                    categoryElement = document.querySelector('.account-category:nth-child(1)');
+                    break;
+                case 'gmail':
+                    categoryElement = document.querySelector('.account-category:nth-child(2)');
+                    break;
+                case 'github':
+                    categoryElement = document.querySelector('.account-category:nth-child(3)');
+                    break;
+                default:
+                    // Check if "Other" category exists
+                    categoryElement = document.querySelector('.account-category:nth-child(4)');
+                    if (!categoryElement) {
+                        categoryElement = document.createElement('div');
+                        categoryElement.className = 'account-category';
+                        categoryElement.innerHTML = `<h3 class="category-title">Other Accounts</h3>`;
+                        accountList.appendChild(categoryElement);
+                    }
+            }
+            
+            // Create new account item
+            const accountItem = document.createElement('div');
+            accountItem.className = 'account-item';
+            accountItem.innerHTML = `
+                <div class="account-info">
+                    <strong>${accountType === 'gmail' ? 'Email' : 'Username'}:</strong> ${username}
+                    <button class="copy-btn" onclick="copyToClipboard('${username}')">Copy</button>
+                </div>
+                <div class="account-info">
+                    <strong>Password:</strong> <span class="password">${password}</span>
+                    <button class="copy-btn" onclick="copyToClipboard('${password}')">Copy</button>
+                </div>
+            `;
+            
+            // Add the new account to the category
+            categoryElement.appendChild(accountItem);
+            
+            // Clear the form
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            
+            alert('Account added successfully!');
+        });
+        
+        // Copy to clipboard function
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                alert('Copied to clipboard: ' + text);
+            }, function(err) {
+                console.error('Could not copy text: ', err);
+            });
+        }
+    </script>
+</body>
+</html>
